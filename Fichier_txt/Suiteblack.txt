@@ -1,0 +1,13 @@
+Deux*2*2
+Trois*3*3
+Quatre*4*4
+Cinq*5*5
+Six*6*6
+Sept*7*7
+Huit*8*8
+Neuf*9*9
+Dix*10*10
+Valet*V*10
+Dame*D*10
+Roi*R*10
+As*A*11
