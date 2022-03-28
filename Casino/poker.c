@@ -22,7 +22,7 @@ void    ft_lecture_poker(SCARTE *paquet)
 
 void    ft_changement_de_carte(SCARTE *pioche, SCARTE *main, int c)
 {
-    SCARTE tmp[1];
+    SCARTE tmp[10];
 
     ft_ini_vide(tmp, 1);
     ft_transfert_aleatoire(pioche, tmp, 1);

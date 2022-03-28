@@ -15,7 +15,7 @@ int list_vainqueur(int score[10], int vainqueur[10])
     {
         if (score[i] == max)
         {
-            vainqueur[j] = i+1;
+            vainqueur[j] = i;
             ++j;
             ++v;
         }
@@ -174,7 +174,7 @@ void    ft_texas(SCARTE *jeux, int *argent)
         v = list_vainqueur(score, vainqueur);
         if (v == 1)
         {
-            if (vainqueur[0] == 1)
+            if (vainqueur[0] == 0)
             {
                 ft_putstr("Vous avez gagnez !!\nVous remportez le pot");
                 *argent = *argent + mise;
@@ -182,7 +182,7 @@ void    ft_texas(SCARTE *jeux, int *argent)
             else
             {
                 ft_putstr("Joueur (");
-                ft_putnbr(vainqueur[0]-1);
+                ft_putnbr(vainqueur[0]);
                 ft_putstr(") gagne la partie et le pot\n");
             }
         }
@@ -191,14 +191,12 @@ void    ft_texas(SCARTE *jeux, int *argent)
             ft_putstr("Il y a ");
             ft_putnbr(v);
             ft_putstr(" vainqueur a ce partager le pot :\n");
-            ft_putnbr(vainqueur[0]-1);
-            ft_putnbr(vainqueur[1]-1);
-            if (vainqueur[0] == 1)
+            if (vainqueur[0] == 0)
                 ft_putstr("- Vous\n");
             for (i = 1; vainqueur[i] != 0; ++i)
             {
                 ft_putstr("- Joueur (");
-                ft_putnbr(vainqueur[i]-1);
+                ft_putnbr(vainqueur[i]);
                 ft_putstr(")\n");
             }
             if (vainqueur[0] == 1)

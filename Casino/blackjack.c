@@ -80,8 +80,8 @@ void    ft_blackjack(SCARTE *jeux, int *argent)
     score[0] = ft_blackjack2(pioche, main, score, 2);
     if (score[0] == 21)
     {
-        ft_putstr("BLACK JACK !! Vous gagnez\nVous gagnez 12 jetons\n");
-        *argent = *argent + 12;
+        ft_putstr("BLACK JACK !! Vous doublez la mise !!\nVous gagnez 6 jetons\n");
+        *argent = *argent + 6;
         return;
     }
     while(score[0] != 21)
@@ -125,8 +125,8 @@ void    ft_blackjack(SCARTE *jeux, int *argent)
         }
         if (scorebq[0] > 21 || score[0] > scorebq[0])
         {
-            ft_putstr("BRAVO !! Vous avez gagné !!\nVous gagnez 9 jetons\n");
-            *argent = *argent + 9;
+            ft_putstr("BRAVO !! Vous avez gagné !!\nVous gagnez 3 jetons\n");
+            *argent = *argent + 3;
         }
         else if (scorebq[0] == score[0])
             ft_putstr("Egalité, vous recupez votre mise\n");
