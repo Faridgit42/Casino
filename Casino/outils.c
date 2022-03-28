@@ -95,10 +95,14 @@ void    ft_test()
 
     ft_ini_croisement(pioche, "Fichier_txt/Suite.txt", "Fichier_txt/Couleur.txt");
     //ft_ini_simple(pioche, "Fichier_txt/Speciale.txt");
-    ft_transfert_aleatoire(pioche, main[0], 15);
-    ft_copy_paquet(main[0], main[1]);
+    ft_transfert_aleatoire(pioche, main[0], 2);
+    //ft_copy_paquet(main[0], main[1]);
+    ft_transfert_aleatoire(pioche, main[1], 4);
     ft_putstr("le paquet : \n");
+    ft_lecture(main[0]);
     ft_lecture(main[1]);
+    ft_lecture_double(main[0], main[1], 15);
+    //ft_lecture(main[1]);
     //ft_transfert_aleatoire(main, main2, 15);
     //ft_lecture_visuel(pioche, 13);
     //ft_transfert_aleatoire(pioche, main, 15);

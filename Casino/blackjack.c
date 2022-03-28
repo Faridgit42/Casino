@@ -11,7 +11,6 @@ void    ft_lecture_blackjack(SCARTE *paquet)
 
     aff = 15;
     for(y = 1; paquet[y].suite[0] != '\0' ; ++y, ++max);
-    //ft_putnbr(max);
     if(max < aff)
         aff = max;
     for(y = 0; y <= max ; ++y)
@@ -62,7 +61,7 @@ int ft_blackjack2(SCARTE *pioche, SCARTE *main, int score[2], int x)
     return(score[0]);
 }
 
-void    ft_blackjack(SCARTE *jeux)
+void    ft_blackjack(SCARTE *jeux, int *argent)
 {
     SCARTE pioche[100];
     SCARTE main[100];
@@ -81,7 +80,8 @@ void    ft_blackjack(SCARTE *jeux)
     score[0] = ft_blackjack2(pioche, main, score, 2);
     if (score[0] == 21)
     {
-        ft_putstr("BLACK JACK !! Vous gagnez\n");
+        ft_putstr("BLACK JACK !! Vous gagnez\nVous gagnez 12 jetons\n");
+        *argent = *argent + 12;
         return;
     }
     while(score[0] != 21)
@@ -100,7 +100,8 @@ void    ft_blackjack(SCARTE *jeux)
             {
                 if(score[0] > 21)
                 {
-                    ft_putstr("Perdu... Vous avez depassé 21\n");
+                    ft_putstr("Perdu... Vous avez depassé 21\nVous perdez 3 jetons\n");
+                    *argent = *argent - 3;
                     break;
                 }
             }
@@ -123,10 +124,16 @@ void    ft_blackjack(SCARTE *jeux)
         scorebq[0] = ft_blackjack2(pioche, banque, scorebq, 1);
         }
         if (scorebq[0] > 21 || score[0] > scorebq[0])
-            ft_putstr("BRAVO !! Vous avez gagné !! :)\n");
+        {
+            ft_putstr("BRAVO !! Vous avez gagné !!\nVous gagnez 9 jetons\n");
+            *argent = *argent + 9;
+        }
         else if (scorebq[0] == score[0])
             ft_putstr("Egalité, vous recupez votre mise\n");
         else
-            ft_putstr("Perdu... Dommage\n");
+        {
+            ft_putstr("Perdu... \nDommage Vous perdez 3 jetons\n");
+            *argent = *argent - 3;
+        }
     }
 }

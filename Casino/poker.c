@@ -22,7 +22,7 @@ void    ft_lecture_poker(SCARTE *paquet)
 
 void    ft_changement_de_carte(SCARTE *pioche, SCARTE *main, int c)
 {
-    SCARTE tmp[5];
+    SCARTE tmp[1];
 
     ft_ini_vide(tmp, 1);
     ft_transfert_aleatoire(pioche, tmp, 1);
@@ -106,6 +106,7 @@ void    ft_score_poker(SCARTE *paquet, int resultat[100][52], int s)
                 resultat[50+d][x] = paquet[i].matricule;
         }
     }
+    v = 1;
     for (i = 0; paquet[i].suite[0] != '\0'; ++i) //quint
     {
         if(ft_strcmp(paquet[i].couleur, paquet[i+1].couleur) == 0 && paquet[i].valeur == paquet[i + 1].valeur+1 )
@@ -166,15 +167,30 @@ void    ft_score_poker(SCARTE *paquet, int resultat[100][52], int s)
     }
 }
 
+int ft_valeur_paquet(SCARTE *paquet)
+{
+    int resultat = 0;
+    int i;
+
+    for (i = 0; paquet[i].suite[0] != '\0'; ++i)
+        resultat = resultat + paquet[i].valeur;
+    return(resultat);
+}
+
 int ft_annonce_score(SCARTE *paquet, int score[100][52])
 {
     int i;
     int j;
+    int d;
     int x;
     int u;
+    int m = 0; // taille de la main pour affichage double
     int sctotal = 0;
     SCARTE tmp[100];
-   
+    SCARTE tmp2[100];
+
+    ft_ini_vide(tmp, 10);
+    ft_ini_vide(tmp2, 10);
     for (x = 0; score[60+x][0] != 0; ++x)
     {
         for (u = 0; score[60+x][u] != 0; ++u)
@@ -182,31 +198,41 @@ int ft_annonce_score(SCARTE *paquet, int score[100][52])
             for (i = 0; paquet[i].matricule != score[60+x][u]; ++i);
             tmp[u] = paquet[i];
         }
-        ft_lecture_blackjack(tmp);
         if (paquet[i].valeur == 14)
-            ft_putstr("Quinte Flush Royale !");
+            ft_putstr("une quinte Flush Royale !");
         else
         {
-            ft_putstr("Quinte flush aux ");
+            ft_putstr("une quinte flush aux ");
             ft_putstr(paquet[i].couleur);
         }
-        ft_putstr(".\n");
-        sctotal =+ 900 + paquet[i].valeur;
+        ft_putstr("\n");
+        ft_lecture_blackjack(tmp);
+        sctotal = sctotal + 9000 + paquet[i].valeur;
         return(sctotal);
     }
     for (x = 0; score[30+x][0] != 0; ++x)
     {
-        for (u = 0; score[30+x][u] != 0; ++u)
+        for (u = 0, m = 0; score[30+x][u] != 0; ++u, ++m)
         {
             for (i = 0; paquet[i].matricule != score[30+x][u]; ++i);
             tmp[u] = paquet[i];
         }
-        ft_lecture_blackjack(tmp);
-        ft_putstr("Carré de ");
+        ft_putstr("un carré de ");
         ft_putstr(paquet[i].suite);
         ft_putstr(".\n");
-        ft_ini_vide(tmp, 5);
-        sctotal =+ 800 + paquet[i].valeur;
+        ft_ordedecroissant(paquet, 'v');
+        sctotal = sctotal + 8000 + (paquet[i].valeur*40);
+        for (u = 0, i = 0; m <= 4; ++u, ++m, ++i)
+        {
+            for (d = 0; score[30][d] != 0; ++d)
+            {
+                if (paquet[i].matricule == score[30][d])
+                    ++i;   
+            }
+            tmp2[u] = paquet[i];
+        }
+        sctotal = sctotal + ft_valeur_paquet(tmp2);
+        ft_lecture_double(tmp, tmp2, 15);
         return(sctotal);
     }
     for (x = 0; score[70+x][0] != 0; ++x)
@@ -216,12 +242,11 @@ int ft_annonce_score(SCARTE *paquet, int score[100][52])
             for (i = 0; paquet[i].matricule != score[70+x][u]; ++i);
             tmp[u] = paquet[i];
         }
-        ft_lecture_blackjack(tmp);
-        ft_putstr("Full aux ");
+        ft_putstr("un full aux ");
         ft_putstr(paquet[i].suite);
         ft_putstr(".\n");
-        ft_ini_vide(tmp, 5);
-        sctotal =+ 700 + paquet[i].valeur;
+        ft_lecture_blackjack(tmp);
+        sctotal = sctotal + 7000 + (paquet[i].valeur *30) + tmp[0].valeur;
         return(sctotal);
     }
     for (x = 0; score[50+x][0] != 0; ++x)
@@ -231,12 +256,11 @@ int ft_annonce_score(SCARTE *paquet, int score[100][52])
             for (i = 0; paquet[i].matricule != score[50+x][u]; ++i);
             tmp[u] = paquet[i];
         }
-        ft_lecture_blackjack(tmp);
-        ft_ini_vide(tmp, 5);
-        ft_putstr("Couleur a ");
+        ft_putstr("un couleur a ");
         ft_putstr(paquet[i].couleur);
         ft_putstr(".\n");
-        sctotal =+ 600 + paquet[i].valeur;
+        ft_lecture_blackjack(tmp);
+        sctotal = sctotal + 6000 + paquet[i].valeur;
         return(sctotal);
     }
     for (x = 0; score[40+x][0] != 0; ++x)
@@ -246,67 +270,108 @@ int ft_annonce_score(SCARTE *paquet, int score[100][52])
             for (i = 0; paquet[i].matricule != score[40+x][u]; ++i);
             tmp[u] = paquet[i];
         }
-        ft_lecture_blackjack(tmp);
-        ft_ini_vide(tmp, 5);
-        ft_putstr("Suite aux ");
+        ft_putstr("une suite aux ");
         ft_putstr(paquet[i].suite);
         ft_putstr(".\n");
-        sctotal =+ 500 + paquet[i].valeur;
+        ft_lecture_blackjack(tmp);
+        sctotal = sctotal + 5000 + paquet[i].valeur;
         return(sctotal);
     }
     for (x = 0; score[20+x][0] != 0; ++x)
     {
-        for (u = 0; score[20+x][u] != 0; ++u)
+        for (u = 0, m = 0; score[20+x][u] != 0; ++u, ++m)
         {
             for (i = 0; paquet[i].matricule != score[20+x][u]; ++i);
             tmp[u] = paquet[i];
         }
-        ft_lecture_blackjack(tmp);
-        ft_ini_vide(tmp, 5);
-        ft_putstr("Brelan de ");
+        ft_putstr("un brelan de ");
         ft_putstr(paquet[i].suite);
         ft_putstr(".\n");
-        sctotal =+ 400 + paquet[i].valeur;
+        sctotal = sctotal + 4000 + (paquet[i].valeur*30);
+        ft_ordedecroissant(paquet, 'v');
+        for (u = 0, i = 0; m <= 4; ++u, ++m, ++i)
+        {
+            for (d = 0; score[20][d] != 0; ++d)
+            {
+                if (paquet[i].matricule == score[20][d])
+                {
+                    ++i;
+                    d = 0;
+                } 
+            }
+            tmp2[u] = paquet[i];
+        }
+        sctotal = sctotal + ft_valeur_paquet(tmp2);
+        ft_lecture_double(tmp, tmp2, 15);
         return(sctotal);
     }
     j = 0;
-    for (x = 0; score[10+x][0] != 0 && x < 2 ; ++x)
+    for (x = 0; score[10+x][0] != 0 && x < 2; ++x)
+    {
+        for (i = 0; paquet[i].matricule != score[10+x][0]; ++i);
+        ft_putstr("une paire de ");
+        ft_putstr(paquet[i].suite);
+        ft_putstr(" ");
+        ++j;
+        if (x == 0)
+            sctotal = sctotal + (paquet[i].valeur*100);
+        else
+            sctotal = sctotal + (paquet[i].valeur*50) + 1000;
+    }
+    if (j > 0)
+        ft_putstr("\n");
+    j = 0;
+    for (m = 0, x = 0; score[10+x][0] != 0 && x < 2 ; ++x)
     {
         for (u = 0; score[10+x][u] != 0; ++u)
         {
             for (i = 0; paquet[i].matricule != score[10+x][u]; ++i);
             tmp[j] = paquet[i];
             ++j;
+            ++m;
         }
     }
     if (j > 0)
-        ft_lecture_blackjack(tmp);
-    ft_ini_vide(tmp, 5);
-    for (x = 0; score[10+x][0] != 0 && x < 2; ++x)
     {
-        for (i = 0; paquet[i].matricule != score[10+x][0]; ++i);
-        ft_putstr("Paire de ");
-        ft_putstr(paquet[i].suite);
-        ft_putstr(" ");
-        if (x == 0)
-            sctotal += 100 + paquet[i].valeur;
-        else
-            sctotal += 100;
+        ft_ordedecroissant(paquet, 'v');
+        for (u = 0, i = 0; m <= 4 && paquet[i].suite[0] != '\0'; ++u, ++i)
+        {
+            for (x = 0; score[10+x][0] != 0 && x < 2 ; ++x)
+            {
+                for (d = 0; score[10+x][d] != 0; ++d) //problem avec x
+                {
+                    if (paquet[i].matricule == score[10+x][d])
+                    {
+                        ++i;
+                        d = 0;
+                    }
+                }
+            }
+            tmp2[u] = paquet[i];
+            ++m;
+        }
+        sctotal = sctotal + ft_valeur_paquet(tmp2);
+        ft_lecture_double(tmp, tmp2, 15);
     }
-    if (j > 0)
-        ft_putstr("\n");
     if (sctotal == 0)
     {
         for (i = 0; paquet[i].matricule != score[0][0]; ++i);
         tmp[j] = paquet[i];
-        ft_lecture_blackjack(tmp);
-        ft_ini_vide(tmp, 5);
         ft_putstr("Carte la plus grande ");
         ft_putstr(paquet[i].suite);
         ft_putstr(" de ");
         ft_putstr(paquet[i].couleur);
         ft_putstr(".\n");
         sctotal =+ paquet[i].valeur;
+        ft_ordedecroissant(paquet, 'v');
+        for (u = 0, i = 0; m <= 3; ++u, ++m, ++i)
+        {
+            if (paquet[i].matricule == score[0][0])
+                ++i;      
+            tmp2[u] = paquet[i];
+        }
+        sctotal = sctotal + ft_valeur_paquet(tmp2);
+        ft_lecture_double(tmp, tmp2, 15);
     }
     return(sctotal);
 }
@@ -392,7 +457,7 @@ int ft_poker_IA(SCARTE *pioche, int changement)
     while (changement > 0 && scoreb <= 500)
     {   
         system("clear");
-        ft_putstr("\nla banque a\n");
+        ft_putstr("La banque a\n");
         ft_ini_vide(banque[1], 90);
         ft_copy_paquet(banque[0], banque[1]);
         ft_lecture_blackjack(banque[0]);
@@ -438,18 +503,19 @@ int ft_poker_IA(SCARTE *pioche, int changement)
             --changement;
         }
     }
+    system("clear");
     ft_putstr("\nla banque a\n");
     ft_lecture_blackjack(banque[0]);
     sleep(3);
     system("clear");
-    ft_putstr("La banque a \n");
+    ft_putstr("La banque a ");
     ft_init_score(resultat);
     ft_score_poker(banque[0], resultat, 5);
     scoreb = ft_annonce_score(banque[0], resultat);
     return (scoreb);
 }
 
-void    ft_poker(SCARTE *jeux)
+void    ft_poker(SCARTE *jeux, int *argent)
 {
     SCARTE pioche[100];
     SCARTE main[100];
@@ -495,18 +561,24 @@ void    ft_poker(SCARTE *jeux)
     ft_putstr("Vous ne pouvez plus changer votre main\n");
     sleep(3);
     system("clear");
-    ft_putstr("Vous avez \n");
+    ft_putstr("Vous avez ");
     ft_score_poker(main, resultat, 5);
     scorej = ft_annonce_score(main, resultat);
     sleep(4);
     changement = 5;
     scoreb = ft_poker_IA(pioche, changement);
-    ft_putstr("\nVous avez \n");
+    ft_putstr("\nVous avez ");
     scorej = ft_annonce_score(main, resultat);
     if (scorej > scoreb)
-        ft_putstr("\nVous avez GAGNEZ !!!\n");
+    {
+        ft_putstr("\nVous avez GAGNEZ !!!\nVous gagnez 5 jetons\n");
+        *argent = *argent + 5;
+    }
     else if (scorej == scoreb)
-        ft_putstr("\nEgalité ! Incroyable !\n");
+        ft_putstr("\nEgalité ! Personne ne gagne\n");
     else
-        ft_putstr("\nVous avez perdu...\n");
+    {
+        ft_putstr("\nVous avez perdu...\nVous perdez 5 jetons\n");
+                    *argent = *argent - 5;
+    }
 }

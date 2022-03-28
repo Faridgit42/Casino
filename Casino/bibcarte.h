@@ -45,6 +45,7 @@ void    ft_lecture_analogique(SCARTE *paquet);
 void    ft_lecture_visuel(SCARTE *paquet, int aff);
 void    ft_copy_paquet(SCARTE *p1, SCARTE *p2);
 void    ft_copy_carte(SCARTE *pioche, SCARTE *main, int c, int p);
+void    ft_lecture_double(SCARTE *paquet, SCARTE *paquet2, int aff);
 
 //triage
 void    ft_ordedecroissant(SCARTE *paquet, char c);
@@ -57,11 +58,11 @@ void    ft_detect_grande_carte(SCARTE *paquet);
 
 //blackjack
 int     ft_blackjack2(SCARTE *pioche, SCARTE *main, int score[2], int x);
-void    ft_blackjack(SCARTE *jeux);
+void    ft_blackjack(SCARTE *jeux, int *argent);
 void    ft_lecture_blackjack(SCARTE *paquet);
 
 //poker
-void    ft_poker(SCARTE *jeux);
+void    ft_poker(SCARTE *jeux, int *argent);
 void    ft_changement_de_carte(SCARTE *pioche, SCARTE *main, int c);
 void    ft_lecture_poker(SCARTE *paquet);
 void    ft_init_score(int score[100][52]);
@@ -70,6 +71,6 @@ int     ft_annonce_score(SCARTE *paquet, int score[100][52]);
 void    ft_score_poker(SCARTE *paquet, int resultat[100][52], int s);
 
 //texas
-void    ft_texas(SCARTE *jeux);
+void    ft_texas(SCARTE *jeux, int *argent);
 
 #endif

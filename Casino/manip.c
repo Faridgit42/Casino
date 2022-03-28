@@ -8,6 +8,45 @@ int ft_nbr_carte(SCARTE *paquet)
     return(i);
 }
 
+void    ft_lecture_double(SCARTE *paquet, SCARTE *paquet2, int aff)
+{
+    int y;
+    int l;
+    int c;
+    int max;
+    int t;
+    
+    max = ft_nbr_carte(paquet) + ft_nbr_carte(paquet2);
+    if(max < aff)
+        aff = max;
+    for(y = 0; y <= max ; ++y)
+    {
+        for(l = 0; l <= 7 ; ++l)
+        {
+            for(t = 0; t <= aff && t < (ft_nbr_carte(paquet)-y); ++t)
+            {
+                for(c = 0; paquet[y+t].matrix[l][c] != '\0'; ++c)
+                {
+                    ft_putchar(paquet[y+t].matrix[l][c]);
+                }
+                ft_putchar(' ');
+            }
+            ft_putstr("  ");
+            for(t = 0; t <= aff && t < (ft_nbr_carte(paquet2)-y); ++t)
+            {
+                for(c = 0; paquet2[y+t].matrix[l][c] != '\0'; ++c)
+                {
+                    ft_putchar(paquet2[y+t].matrix[l][c]);
+                }
+                ft_putchar(' ');
+            }
+        ft_putchar('\n');
+        }
+    ft_putchar('\n');
+    y = y + aff;
+    }
+}
+
 void    ft_lecture_analogique(SCARTE *paquet)
 {
     int y;
